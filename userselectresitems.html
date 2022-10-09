@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Firease -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-storage-compat.js"></script>
+
+    <!-- Bootstrap icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <!-- Css Styling -->
+    <link rel="stylesheet" href="./css/navbar.css" />
+    <link rel="stylesheet" href="./css/userhome.css">
+    <link rel="stylesheet" href="./css/userselectresitems.css">
+    <link rel="stylesheet" href="./css/loader.css">
+    <!-- Bootstrap V.5.0 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    
+    
+</head>
+
+<body onload="showResAllItems();">
+
+ <!-- PHONE Number Authentication -->
+
+    <!-- <input type="text" id="userOrderNum">
+    <button onclick="phoneauth()">Send Code</button>
+    <div id="recaptcha-container"></div>
+    <input type="text" id="vericode">
+    <button onclick="verify()">vericode Code</button> -->
+
+
+    <div id="loader" style="display: none;">
+        <div class="loader3">
+            <span></span>
+            <span></span>
+
+        </div>
+    </div>
+    <!-- Navbar -->
+    <div class="nav">
+        <input type="checkbox" id="nav-check">
+        <div class="nav-header">
+            <div class="nav-title">
+                
+            </div>
+        </div>
+        <div class="nav-btn">
+            <label for="nav-check">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+        </div>
+
+        <div class="nav-links">
+            <a href="./userhome.html">Home</a>
+            <a href="" onclick="logout()">
+                <i class="bi bi-person-circle nav-icon"></i>LOGOUT</a>
+            
+        </div>
+    </div>
+
+    <div class="nav-bottom">
+        <p class="text-center head-resName" id="resName"></p>
+       
+    </div>
+    <!-- ------------Navbar End----------- -->
+
+    <!-- Head -->
+
+    <div class="main-detail">
+        <div class="mainContent">
+            <div class="main-itemsimage">
+                <iframe height="315" width="400" left="100" class="" id="mainHeadervideo" allowfullscreen="allowfullscreen"
+                mozallowfullscreen="mozallowfullscreen" 
+                msallowfullscreen="msallowfullscreen" 
+                oallowfullscreen="oallowfullscreen" 
+                webkitallowfullscreen="webkitallowfullscreen" ></iframe>
+            </div>
+            <div class="">
+                <div class="">
+                    <h2 class="main-infoname" id="mainResName"></h2>
+                    <h3 class="info-button"><i class="bi bi-info-circle"></i></h3>
+                </div>
+                <div class="">
+                    <div class="" id="deal"></div>
+                    <!-- <div class="openOrclose-text">closed</div> -->
+                    
+                </div>
+                <div id="allResItems">
+
+                    <!-- <div class="box-item pt-3">
+                        <div class="Item-nameNimage">
+                            
+                            <div class="itemname">
+                                <p><b>Biryani</b><br>chana dall</p>
+                                <p>Rs: 120</p>
+                            </div>
+                            <div class="itemimage">
+                                <img src="./images/tikka.png" width="80px" alt="">
+                                <i class="bi bi-plus-square-fill plus-item"></i>
+                            </div>
+                            
+                        </div>
+                    </div> -->
+                </div>
+
+            </div>
+
+        </div>
+        <!-- ---------------------- Cart  -->
+        <aside class="">
+           
+            
+            <div class="">
+                <div class="" id="cartitem">
+                    <!-- <div class="d-f-j-b pt-4">
+                        <div class="cartItemname">Zinger</div>
+                        <div class="cart">Rs 200</div>
+                    </div>
+                    <div class="text-end">Quatity: 1</div> -->
+                </div>
+            </div>
+            <div class="">
+                
+            </div>
+
+            <div class="">
+                
+                <b>
+                    <p> <span id="deliverycharges"></span></p>
+                </b>
+            </div>
+            <div class="">
+                
+                
+                     <span id="totalprice"></span>
+                
+            </div>
+            <div class="">
+                <button class="" id="checkoutbtn" data-bs-toggle="modal"
+                    data-bs-target="" >
+                    
+                </button>
+            </div>
+        </aside>
+    </div>
+    <!-- -------------------- Head End ----------------- -->
+
+    <!-- Show All items from Selected restaurant  -->
+    <!-- <div class="container my-3"> -->
+    <div class="row px-3 pt-4 " id="userResturantShow">
+        <!-- <div class="col-lg-3 col-md-4 col-sm-6 pt-4 d-flex justify-content-center">
+                <div class="card" style="width: 17rem; height: 30 !important;">
+                    <img src="./images/resturant.jpg" class="card-img-top" style="height: 200px;" alt="...">
+                    <div class="card-body p-0 pt-3">
+                        <div class="d-flex justify-content-between margin-remove">
+                            <p class="card-text" style="font-size: 16px;"><b>WF Food HotN Roll</b></p>
+                            <p class="card-text" style="font-size: 12px;"><b><i
+                                        class="bi bi-star-fill text-primary"></i> 4.1</b><span class="text-muted"
+                                    style="font-size: 13px;">/5</span></p>
+                        </div>
+                        <p class="card-text text-muted" style="font-size: 14px;">$$$, beverage, burger, fast foods</p>
+                    </div>
+                </div>
+            </div> -->
+    </div>
+    <!-- </div> -->
+
+    <!-- <div>
+        <input type="file" id="photo"> 
+        <img  alt="" id="image">
+        <button class="btn btn-secondary" onclick="upload()">Upload</button>
+    </div> -->
+    <div class="">
+        <button class="" id="checkoutbtnmodal" data-bs-toggle="modal"
+            data-bs-target="" onclick="">
+            
+        </button>
+    </div>
+    <!--! Modal Box -->
+
+    <div class="" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="">
+            <div class="">
+                
+                    
+                <div class="">
+                    <button type="" id="placeorder" onclick=""
+                        class="" data-bs-dismiss="modal">
+                        
+                    </button>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <script src="./js/loginSignup.js"></script>
+    <script type="text/javascript" src="./js/userselectresitems.js"></script>
+    <script src="./js/sweetalert.min.js"></script>
+
+    <!-- Bootstrap v.5.0 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
